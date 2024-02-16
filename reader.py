@@ -1,15 +1,20 @@
-import numpy as np
-import os
 from PIL import Image
-from PIL.ExifTags import TAGS
+from PIL.TiffTags import TAGS
+import pandas as pd
 
-image = Image.open('MUM_5432-Edit.jpg')
-exif = image._getexif()
+img = Image.open('MRN_1930.NEF')
+meta = {}
 
-data = {}
+for key in img.tag:
+    try: meta[str(TAGS[key])] = img.tag[key]
+    except: pass
 
-for key, val in exif.items():
-    if key in TAGS:
-        data[TAGS[key]] = val
+date = meta['DateTimeOriginal']
 
-print(data['Software'])
+year = date[0][0:4]
+month = date[0][5:7]
+day = date[0][8:10]
+
+print(year)
+print(month)
+print(day)
