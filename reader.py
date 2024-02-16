@@ -2,19 +2,21 @@ from PIL import Image
 from PIL.TiffTags import TAGS
 import pandas as pd
 
-img = Image.open('MRN_1930.NEF')
-meta = {}
+def get_date(image):
+    """gets an image and returns the year and the month it was taken in 
 
-for key in img.tag:
-    try: meta[str(TAGS[key])] = img.tag[key]
-    except: pass
+    Args:
+        image (str): the full path of the image
 
-date = meta['DateTimeOriginal']
+    Returns:
+        year, month (str) : the year and month the image was taken in """    
+    img = Image.open(image)
+    date = img.tag[36867]
 
-year = date[0][0:4]
-month = date[0][5:7]
-day = date[0][8:10]
+    year = date[0][0:4]
+    month = date[0][5:7]
+    day = date[0][8:10]
 
-print(year)
-print(month)
-print(day)
+    return year, month, day
+
+print(*get_date('MRN_1718.NEF'))
